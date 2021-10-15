@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+body {
+    font-family: 'Anton', sans-serif;
+    background-color: #000;
+    color: white;
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+} 
+
+.banner {
+    display: flex;
+    align-items: center;
+    perspective: 500px;/*it gives the perspective, to the backward when rotate. */
+    
+    // perspective-origin: 50% calc(50% - 150px);
+    // animation: rotate 24s infinite linear;
+    // transform-style: preserve-3d;
+}
+
+// @keyframes rotate {
+//     to { transform: rotateY(-360deg)}
+// }
+
+$width: 42px;
+
+.panel {
+    position: relative; // esto es para la rotacion v1 
+    //position: absolute; //para la rotacion v2
+    //transform: translate(-50%, -50%) rotateY(var(--angle)) translateZ(159.3px); //rotacion v2
+    width: $width;
+    height: 145px;
+    // border: 1px solid white;
+    // background-color: #fff4;
+    overflow: hidden;
+
+    //transform-style: preserve-3d;
+    animation: rotate 6s var(--delay) infinite ease-in-out alternate; /* alternate hace que de vueltas para adelante y para atras*/
+}
+
+// @keyframes rotate {
+//     from { transform: rotateX(0deg); }
+//     to { transform: rotateX(360deg); }    
+// }
+
+@keyframes rotate {
+    0%, 10% { transform: rotateX(0deg); } /* ese 10% que puse de dif hace que este stopped antes de animarse */
+    90%, 100% { transform: rotateX(720deg); } 
+}
+
+/* .panel:hover {
+    transform: scale(1.5); 
+} // interesting effect the panel hover. I think with transition it could be made more realistic  */
+
+.panel::before {
+    position: absolute;
+    left: var(--left);
+    content: 'Quien se lo invita???? jejeee';
+    font-size: 100px;
+    width: max-content;
+    color: hsl(var(--hue), 75%, 75%);
+}
+
+@for $i from 0 to 24 {
+    .panel:nth-child(#{$i + 1}) {
+        --left: #{$width * $i * -1}; //si no hacemos esto, en cada cuadrado se va a iniciar el content. al poner esto se atrasa cada cuadrado automaticamente para que el texto encaje perfecto, 
+        --hue: #{360 / 24 * $i}; // colorea el texto. color to the text
+        // --top: #{random(30)}px;
+        --delay: #{$i * 0.1s}; //rotacion v1
+        //--angle: #{360deg / 24 * $i} /*aca vamos a desarrollar la rotacion v2 */
+    }
+}
